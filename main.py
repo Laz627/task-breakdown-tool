@@ -40,31 +40,32 @@ if api_key:
         else:
             # Generate prompt for GPT-4
             prompt = (
-                f"Task Name: {task_name}\n"
+                f"Task Breakdown: {task_name}\n"
+                f"Total Time Estimate: {total_time_estimate} hours\n\n"
                 f"Description: {task_description}\n"
                 f"Effort Level: {effort_level}\n"
-                f"Complexity Level: {complexity_level}\n"
-                f"Total Time Estimate: {total_time_estimate} hours\n\n"
-                "Please break down this task into clear, actionable steps, distributing the total time estimate across the steps. Indicate the time/effort needed for each step."
-                " If the breakdown seems unrealistic based on the input time estimate, provide a warning and suggest adjustments."
+                f"Complexity Level: {complexity_level}\n\n"
+                "Please provide a structured breakdown of the task into detailed steps. Each step should include:\n"
+                "1. Step Name\n"
+                "2. Action required\n"
+                "3. Time needed (in minutes or hours)\n"
+                "4. Effort level\n"
+                "Summarize time allocation and suggest adjustments if the breakdown exceeds or is unrealistic for the total time estimate."
             )
 
             try:
                 # Call OpenAI's API
                 response = openai.ChatCompletion.create(
-                    model="gpt-4o-mini",  # Replace with your preferred model
+                    model="gpt-4",  # Replace with your preferred model
                     messages=[
-                        {"role": "system", "content": "You are a helpful assistant that breaks down tasks."},
+                        {"role": "system", "content": "You are a structured task breakdown assistant."},
                         {"role": "user", "content": prompt}
                     ],
-                    max_tokens=500
+                    max_tokens=800
                 )
 
                 # Extract and display the output
                 task_breakdown = response["choices"][0]["message"]["content"].strip()
-                if "warning" in task_breakdown.lower():
-                    st.warning("The provided time estimate may be underestimated. Consider revising it based on the suggested steps.")
-                
                 st.subheader("Task Breakdown")
                 st.markdown(task_breakdown)
 
@@ -81,6 +82,5 @@ st.markdown(
     "2. Enter the task details.\n"
     "3. Choose the estimated effort level and complexity.\n"
     "4. Enter your total time estimate for the task.\n"
-    "5. Click 'Generate Task Breakdown' to get actionable steps.\n"
-    "6. If the estimate seems off, you'll receive a warning with suggestions."
+    "5. Click 'Generate Task Breakdown' to get actionable steps formatted like the example provided."
 )
