@@ -51,7 +51,7 @@ if api_key:
             try:
                 # Call OpenAI's API
                 response = openai.ChatCompletion.create(
-                    model="gpt-40-mini",  # Replace with your preferred model
+                    model="gpt-4o-mini",  # Replace with your preferred model
                     messages=[
                         {"role": "system", "content": "You are a helpful assistant that breaks down tasks."},
                         {"role": "user", "content": prompt}
