@@ -50,13 +50,13 @@ if api_key:
                 "2. Action required\n"
                 "3. Time needed (in minutes or hours)\n"
                 "4. Effort level\n"
-                "Summarize time allocation and suggest adjustments if the breakdown exceeds or is unrealistic for the total time estimate."
+                "Summarize time allocation with the step names and their corresponding times. Suggest adjustments if the breakdown exceeds or is unrealistic for the total time estimate."
             )
 
             try:
                 # Call OpenAI's API
                 response = openai.ChatCompletion.create(
-                    model="gpt-4o-mini",  # Replace with your preferred model
+                    model="gpt-4",  # Replace with your preferred model
                     messages=[
                         {"role": "system", "content": "You are a structured task breakdown assistant."},
                         {"role": "user", "content": prompt}
@@ -82,5 +82,5 @@ st.markdown(
     "2. Enter the task details.\n"
     "3. Choose the estimated effort level and complexity.\n"
     "4. Enter your total time estimate for the task.\n"
-    "5. Click 'Generate Task Breakdown' to get actionable steps formatted like the example provided."
+    "5. Click 'Generate Task Breakdown' to get actionable steps formatted like the example provided, including step names in the time allocation summary."
 )
