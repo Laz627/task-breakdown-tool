@@ -28,6 +28,9 @@ if api_key:
             value=3,
             help="Choose how many steps the task should be broken into."
         )
+        total_time_estimate = st.number_input(
+            "Total Time Estimate (in hours)", min_value=0.0, step=0.5, help="Enter your estimated total time for the task."
+        )
         submitted = st.form_submit_button("Generate Task Breakdown")
 
     # Generate output when form is submitted
@@ -40,14 +43,15 @@ if api_key:
                 f"Task Name: {task_name}\n"
                 f"Description: {task_description}\n"
                 f"Effort Level: {effort_level}\n"
-                f"Complexity Level: {complexity_level}\n\n"
-                "Please break down this task into clear, actionable steps, indicating the time/effort needed for each step. Provide time estimates for completing each step as well."
+                f"Complexity Level: {complexity_level}\n"
+                f"Total Time Estimate: {total_time_estimate} hours\n\n"
+                "Please break down this task into clear, actionable steps, distributing the total time estimate across the steps. Indicate the time/effort needed for each step."
             )
 
             try:
                 # Call OpenAI's API
                 response = openai.ChatCompletion.create(
-                    model="gpt-4o-mini",  # Replace with your preferred model
+                    model="gpt-40-mini",  # Replace with your preferred model
                     messages=[
                         {"role": "system", "content": "You are a helpful assistant that breaks down tasks."},
                         {"role": "user", "content": prompt}
@@ -72,5 +76,6 @@ st.markdown(
     "1. Enter your OpenAI API Key in the sidebar.\n"
     "2. Enter the task details.\n"
     "3. Choose the estimated effort level and complexity.\n"
-    "4. Click 'Generate Task Breakdown' to get actionable steps."
+    "4. Enter your total time estimate for the task.\n"
+    "5. Click 'Generate Task Breakdown' to get actionable steps."
 )
