@@ -46,6 +46,7 @@ if api_key:
                 f"Complexity Level: {complexity_level}\n"
                 f"Total Time Estimate: {total_time_estimate} hours\n\n"
                 "Please break down this task into clear, actionable steps, distributing the total time estimate across the steps. Indicate the time/effort needed for each step."
+                " If the breakdown seems unrealistic based on the input time estimate, provide a warning and suggest adjustments."
             )
 
             try:
@@ -61,6 +62,9 @@ if api_key:
 
                 # Extract and display the output
                 task_breakdown = response["choices"][0]["message"]["content"].strip()
+                if "warning" in task_breakdown.lower():
+                    st.warning("The provided time estimate may be underestimated. Consider revising it based on the suggested steps.")
+                
                 st.subheader("Task Breakdown")
                 st.markdown(task_breakdown)
 
@@ -77,5 +81,6 @@ st.markdown(
     "2. Enter the task details.\n"
     "3. Choose the estimated effort level and complexity.\n"
     "4. Enter your total time estimate for the task.\n"
-    "5. Click 'Generate Task Breakdown' to get actionable steps."
+    "5. Click 'Generate Task Breakdown' to get actionable steps.\n"
+    "6. If the estimate seems off, you'll receive a warning with suggestions."
 )
